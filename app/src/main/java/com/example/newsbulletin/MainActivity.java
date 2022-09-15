@@ -19,9 +19,8 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    // ArrayList for person names
-    ArrayList list = new ArrayList<>(Arrays.asList("Person 1", "Person 2", "Person 3", "Person 4", "Person 5", "Person 6", "Person 7", "Person 1", "Person 2", "Person 3", "Person 4", "Person 5", "Person 6", "Person 7", "Person 1", "Person 2", "Person 3", "Person 4", "Person 5", "Person 6", "Person 7"));
     String strJson;
+    NewsListAdapter mNewsListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +31,11 @@ public class MainActivity extends AppCompatActivity {
         //LinearLayoutManager used for displaying the data items in a horizontal or vertical scrolling List
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        fetchData();
         //  call the constructor of CustomAdapter to send the reference and data to Adapter
-        NewsListAdapter newsListAdapter = new NewsListAdapter(MainActivity.this, list);
-        recyclerView.setAdapter(newsListAdapter); // set the Adapter to RecyclerView
+        mNewsListAdapter = new NewsListAdapter(MainActivity.this);
+
+        recyclerView.setAdapter(mNewsListAdapter); // set the Adapter to RecyclerView
 
 
         //API = 2c80b95cd2384627adc499fe8bb7d586
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                                         newsJsonObject.optString("urlToImage"));
                                 newsArray.add(news);
                             }
+                            mNewsListAdapter.updateNews(newsArray);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

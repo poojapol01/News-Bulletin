@@ -20,7 +20,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsViewHolder> {
     //RecyclerView needs an adapter to populate the views in each item/row with your data.
 
     // data is passed into the constructor
-    public NewsListAdapter(Context context, ArrayList<News> items) {
+    public NewsListAdapter(Context context) {
         this.context = context;
         this.items = items;
     }
@@ -52,6 +52,13 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsViewHolder> {
                 //Toast.makeText(context, items.get(holder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void updateNews(ArrayList<News> updatedNews){
+        items.clear();
+        items.addAll(updatedNews);
+
+        notifyDataSetChanged();
     }
 
     @Override
