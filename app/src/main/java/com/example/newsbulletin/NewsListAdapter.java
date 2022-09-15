@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsViewHolder> {
 
-    private ArrayList<String> items;
+    private ArrayList<News> items;
     Context context;
 
     //RecyclerView needs an adapter to populate the views in each item/row with your data.
 
     // data is passed into the constructor
-    public NewsListAdapter(Context context, ArrayList<String> items) {
+    public NewsListAdapter(Context context, ArrayList<News> items) {
         this.context = context;
         this.items = items;
     }
@@ -39,17 +39,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsViewHolder> {
     @Override
     //onBindViewHolder in which we set the data in the view’s with the help of ViewHolder.
     public void onBindViewHolder(@NonNull NewsViewHolder holder, final int position) {
-        String currentPosition = items.get(position);
+        News currentPosition = items.get(position);
         //Object currentPosition = items.get(position);
         // set the data in items
-        holder.textView.setText(currentPosition);
+        holder.textView.setText(currentPosition.title);
 
         // implement setOnClickListener event on item view.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // display a toast with person name on item click
-                Toast.makeText(context, items.get(holder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, items.get(holder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
             }
         });
     }
