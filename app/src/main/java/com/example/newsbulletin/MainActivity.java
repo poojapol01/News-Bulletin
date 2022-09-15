@@ -13,12 +13,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     // ArrayList for person names
     ArrayList list = new ArrayList<>(Arrays.asList("Person 1", "Person 2", "Person 3", "Person 4", "Person 5", "Person 6", "Person 7", "Person 1", "Person 2", "Person 3", "Person 4", "Person 5", "Person 6", "Person 7", "Person 1", "Person 2", "Person 3", "Person 4", "Person 5", "Person 6", "Person 7"));
+    String strJson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,25 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Object response) {
 
+                        JSONObject jsonRootObject = null;
+                        try {
+                            // Create a newsArray using News arraylist
+                            ArrayList newsArray = new ArrayList<News>();
+
+                            // Initializing the JSON object and extracting the information
+                            jsonRootObject = new JSONObject(strJson);
+                            JSONArray newsJsonArray = jsonRootObject.optJSONArray("articles");
+                            for (int i = 0; i < newsJsonArray.length(); i++) {
+                                JSONObject newsJsonObject = newsJsonArray.getJSONObject(i);
+                                News news = new News(newsJsonObject.optString("title"),
+                                        newsJsonObject.optString("author"),
+                                        newsJsonObject.optString("url"),
+                                        newsJsonObject.optString("urlToImage"));
+                                newsArray.add(news);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
