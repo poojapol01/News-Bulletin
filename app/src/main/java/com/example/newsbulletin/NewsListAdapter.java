@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsViewHolder> {
 
-    private ArrayList<News> items;
+    private ArrayList<News> items=new ArrayList<>(); //You are passing this null;
     Context context;
 
     //RecyclerView needs an adapter to populate the views in each item/row with your data.
@@ -22,7 +22,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsViewHolder> {
     // data is passed into the constructor
     public NewsListAdapter(Context context) {
         this.context = context;
-        this.items = items;
+        //this.items = items;
     }
 
     @NonNull
@@ -54,17 +54,18 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsViewHolder> {
         });
     }
 
+    @Override
+    public int getItemCount() {
+        //total number of rows
+        return items == null ? 0 : items.size();
+        //return items.size();
+    }
+
     public void updateNews(ArrayList<News> updatedNews){
         items.clear();
         items.addAll(updatedNews);
 
         notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemCount() {
-        //total number of rows
-        return items.size();
     }
 }
 

@@ -5,9 +5,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.os.Bundle;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     String strJson;
     NewsListAdapter mNewsListAdapter;
+    String url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=2c80b95cd2384627adc499fe8bb7d586";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         //API = 2c80b95cd2384627adc499fe8bb7d586
     }
     private void fetchData(){
-        String url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=2c80b95cd2384627adc499fe8bb7d586";
 
         JsonObjectRequest
                 jsonObjectRequest
@@ -49,24 +52,24 @@ public class MainActivity extends AppCompatActivity {
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener() {
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(Object response) {
-
-                        JSONObject jsonRootObject = null;
+                    public void onResponse(JSONObject response) {
+                        //jsonRootObject = null;
                         try {
                             // Create a newsArray using News arraylist
                             ArrayList newsArray = new ArrayList<News>();
 
                             // Initializing the JSON object and extracting the information
-                            jsonRootObject = new JSONObject(strJson);
-                            JSONArray newsJsonArray = jsonRootObject.optJSONArray("articles");
+                            JSONArray newsJsonArray = response.getJSONArray("articles");
+                            //JSONObject jsonRootObject = new JSONObject(strJson);
+                            //JSONArray newsJsonArray = jsonRootObject.getJSONArray("articles");
                             for (int i = 0; i < newsJsonArray.length(); i++) {
                                 JSONObject newsJsonObject = newsJsonArray.getJSONObject(i);
-                                News news = new News(newsJsonObject.optString("title"),
-                                        newsJsonObject.optString("author"),
-                                        newsJsonObject.optString("url"),
-                                        newsJsonObject.optString("urlToImage"));
+                                News news = new News(newsJsonObject.getString("title"),
+                                        newsJsonObject.getString("author"),
+                                        newsJsonObject.getString("url"),
+                                        newsJsonObject.getString("urlToImage"));
                                 newsArray.add(news);
                             }
                             mNewsListAdapter.updateNews(newsArray);
@@ -80,7 +83,20 @@ public class MainActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error)
                     {
                     }
-                });
+                })
+
+                {
+                    @Override
+                    public Map getHeaders() throws AuthFailureError
+                    {
+                        HashMap headers = new HashMap();
+                        headers.put("Content-Type", "application/json");
+                        headers.put("User-agent", "Mozilla/5.0");
+                        headers.put("apiKey", "2c80b95cd2384627adc499fe8bb7d586");
+                        return headers;
+                    }
+                };
+
         //requestQueue.add(jsonObjectRequest);
         // Add StringRequest to the RequestQueue
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
