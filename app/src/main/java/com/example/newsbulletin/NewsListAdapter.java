@@ -87,3 +87,7 @@ class NewsViewHolder extends RecyclerView.ViewHolder{
         newsImageView = (ImageView) itemView.findViewById(R.id.newsImageView);
     }
 }
+
+interface NewsItemClicked {
+    void onItemClicked(News item);
+}
