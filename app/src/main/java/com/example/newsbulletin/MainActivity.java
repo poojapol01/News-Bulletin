@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -22,9 +24,9 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    String strJson;
     NewsListAdapter mNewsListAdapter;
-    String url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=2c80b95cd2384627adc499fe8bb7d586";
+    //"https://newsapi.org/v2/top-headlines?country=in&category=";
+    String url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=2c80b95cd2384627adc499fe8bb7d586";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         //LinearLayoutManager used for displaying the data items in a horizontal or vertical scrolling List
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         fetchData();
         //  call the constructor of CustomAdapter to send the reference and data to Adapter
         mNewsListAdapter = new NewsListAdapter(MainActivity.this);
@@ -101,4 +102,5 @@ public class MainActivity extends AppCompatActivity {
         // Add StringRequest to the RequestQueue
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
+
 }
