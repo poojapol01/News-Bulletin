@@ -1,6 +1,7 @@
 package com.example.newsbulletin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +27,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity implements NewsItemClicked,AdapterView.OnItemSelectedListener{
     RecyclerView recyclerView;
     NewsListAdapter mNewsListAdapter;
-    //"https://newsapi.org/v2/top-headlines?country=in&category=";
+
     String url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=2c80b95cd2384627adc499fe8bb7d586";
 
     @Override
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements NewsItemClicked,A
 
         //LinearLayoutManager used for displaying the data items in a horizontal or vertical scrolling List
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        fetchData();
+        fetchData(url);
         //  call the constructor of CustomAdapter to send the reference and data to Adapter
         mNewsListAdapter = new NewsListAdapter(MainActivity.this);
 
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NewsItemClicked,A
 
         //API = 2c80b95cd2384627adc499fe8bb7d586
     }
-    private void fetchData(){
+    private void fetchData(String url){
 
         JsonObjectRequest
                 jsonObjectRequest
@@ -115,6 +117,12 @@ public class MainActivity extends AppCompatActivity implements NewsItemClicked,A
 
     @Override
     public void onItemClicked(News item) {
-
+        // Use a CustomTabsIntent.Builder to configure CustomTabsIntent.
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        // set toolbar color and/or setting custom actions before invoking build()
+        // Once ready, call CustomTabsIntent.Builder.build() to create a CustomTabsIntent
+                CustomTabsIntent customTabsIntent = builder.build();
+        // and launch the desired Url with CustomTabsIntent.launchUrl()
+                customTabsIntent.launchUrl(this, Uri.parse(item.url));
     }
 }

@@ -19,12 +19,15 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsViewHolder> {
 
     private ArrayList<News> items = new ArrayList<>(); //You are passing this null;
     Context context;
+    NewsItemClicked listen;
 
     //RecyclerView needs an adapter to populate the views in each item/row with your data.
 
     // data is passed into the constructor
-    public NewsListAdapter(Context context) {
-        this.context = context;
+    public NewsListAdapter(NewsItemClicked listener) {
+        this.listen=listener;
+        //this.context = context;
+        //this.listen = listener;
         //this.items = items;
     }
 
@@ -36,6 +39,16 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsViewHolder> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news,parent,false);
         // set the view's size, margins, paddings and layout parameters
         NewsViewHolder nvh = new NewsViewHolder(view);
+        // implement setOnClickListener event on item view.
+        nvh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // display a toast with person name on item click
+                //Toast.makeText(context, items.get(holder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
+                listen.onItemClicked(items.get(nvh.getAdapterPosition()));
+            }
+        });
+
         return nvh;
     }
 
@@ -48,15 +61,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsViewHolder> {
         holder.titleTextView.setText(currentPosition.title);
         holder.authorTextView.setText(currentPosition.author);
         Glide.with(holder.itemView.getContext()).load(currentPosition.imgUrl).into(holder.newsImageView);
-
-        // implement setOnClickListener event on item view.
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // display a toast with person name on item click
-                //Toast.makeText(context, items.get(holder.getAdapterPosition()), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
