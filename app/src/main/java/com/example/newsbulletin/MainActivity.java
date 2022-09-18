@@ -24,7 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity implements NewsItemClicked,AdapterView.OnItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NewsItemClicked{
     RecyclerView recyclerView;
     NewsListAdapter mNewsListAdapter;
 
@@ -105,15 +105,6 @@ public class MainActivity extends AppCompatActivity implements NewsItemClicked,A
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 
     @Override
     public void onItemClicked(News item) {
